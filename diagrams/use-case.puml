@@ -1,0 +1,55 @@
+@startuml
+title Smart Housing Services - Use Case Diagram
+
+left to right direction
+skinparam shadowing false
+
+actor "Resident" as Resident
+actor "Dispatcher" as Dispatcher
+actor "Service Staff" as Staff
+
+rectangle "Smart Housing Services" {
+  usecase "Sign in" as SignIn
+  usecase "Submit a request" as Submit
+  usecase "View own requests\nand statuses" as ViewOwn
+
+  usecase "Review requests and\nsystem recommendations" as Review
+  usecase "Confirm or correct category\nand service assignment" as Assign
+  usecase "Handle requests requiring\nmanual review" as ManualReview
+  usecase "View request history" as History
+  usecase "Filter requests by\nstatus and category" as Filter
+
+  usecase "View requests assigned\nto own service" as ViewAssigned
+  usecase "Update request status" as Update
+  usecase "Record resolution note" as Resolution
+}
+
+Resident --> SignIn
+Resident --> Submit
+Resident --> ViewOwn
+
+Dispatcher --> SignIn
+Dispatcher --> Review
+Dispatcher --> Assign
+Dispatcher --> ManualReview
+Dispatcher --> History
+Dispatcher --> Filter
+
+Staff --> SignIn
+Staff --> ViewAssigned
+Staff --> Update
+Staff --> Resolution
+
+note bottom of Assign
+  Assignment requires dispatcher confirmation.
+  Category and service recommendations
+  are generated internally by the system.
+end note
+
+note bottom of Update
+  Assigned -> In progress -> Resolved.
+  Resolving a request requires a resolution note.
+  Staff can update only their service's requests.
+end note
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+title Smart Housing Services - System Context
+
+left to right direction
+skinparam shadowing false
+
+actor "Resident" as Resident
+actor "Dispatcher" as Dispatcher
+actor "Service Staff" as Staff
+
+rectangle "Smart Housing Services\nWeb application prototype" as System
+
+Resident --> System : Submit requests\nView own requests and statuses
+Dispatcher --> System : Review classifications\nConfirm or correct assignments
+Staff --> System : View assigned requests\nUpdate processing statuses
+
+note bottom of System
+  Classifies request text and recommends
+  services from a demonstration directory.
+
+  A dispatcher confirms assignments.
+  No production municipal integration
+  is included in the initial prototype.
+end note
+
+@enduml

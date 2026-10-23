@@ -1,0 +1,56 @@
+@startuml
+title Smart Housing Services - Draft Component Diagram
+
+top to bottom direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+package "User interface" {
+  component "Web Application\nResident, Dispatcher and Service Staff views" as Web
+}
+
+package "Backend Application" {
+  component "Application API\nAuthentication and access control" as API
+  component "Request Management\nSubmission, assignments and statuses" as Requests
+  component "Text Classification\nCategory recommendation" as Classifier
+  component "Service Routing\nService recommendation" as Routing
+  component "Audit History\nChange records" as Audit
+}
+
+database "Application Database\nUsers, requests, services,\nrouting rules and history" as DB
+
+artifact "Trained Model\nText vectorizer, classifier\nand category labels" as Model
+
+Web --> API : HTTPS / JSON
+API --> Requests : Authorised operations
+API --> DB : User and role lookup
+
+Requests --> DB : Save and retrieve requests
+Requests --> Classifier : Request text
+Classifier --> Model : Load inference artifacts
+
+Requests --> Routing : Category and address
+Routing --> DB : Read service directory\nand routing rules
+
+Requests --> Audit : Record changes
+Audit --> DB : Store history
+
+note right of Requests
+  Category and service outputs are recommendations.
+  Assignment requires dispatcher confirmation.
+
+  Classification failure preserves the request
+  and flags it for manual review.
+end note
+
+note bottom of Model
+  Model training and evaluation are performed
+  separately from normal request processing.
+end note
+
+note bottom of DB
+  Initial prototype uses a demonstration
+  service directory and non-sensitive test data.
+end note
+
+@enduml
